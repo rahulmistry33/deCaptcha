@@ -1,2 +1,2 @@
 # deCaptcha
-Final Year Project Repository :D made by faggots
+Final Year Project Repository :D 
