@@ -38,19 +38,15 @@ class CTCLayer(layers.Layer):
 
 
 # load json and create model
-print("Halo ji")
 json_file = open('Math_CNN_RNN_Model.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
-print("Loaded JSON")
 model = model_from_json(loaded_model_json,custom_objects={'CTCLayer': CTCLayer})
 # load weights into new model
 model.load_weights("Math_CNN_RNN_Model.h5")
-print("Loaded model from disk")
 opt = optimizers.Adam()
 
 model.compile(optimizer=opt)
-print(model.summary)
 max_length = 5
 downsample_factor = 4
 
@@ -84,38 +80,55 @@ def decode_batch_predictions(pred):
 images = []
 img_width = 200
 img_height = 80
-for i, im in enumerate(os.listdir('test_samples')):
-    img = tf.io.read_file(os.path.join('test_samples', im))
-    # 2. Decode and convert to grayscale
+# for i, im in enumerate(os.listdir('test_samples')):
+#     img = tf.io.read_file(os.path.join('test_samples', im))
+#     # 2. Decode and convert to grayscale
+#     img = tf.io.decode_png(img, channels=1)
+#     # 3. Convert to float32 in [0, 1] range
+#     img = tf.image.convert_image_dtype(img, tf.float32)
+#     # 4. Resize to the desired size
+#     print(img.shape)
+#     img = tf.image.resize(img, [img_height, img_width])
+#     print(img.shape)
+#     # 5. Transpose the image because we want the time
+#     # dimension to correspond to the width of the image.
+#     img = tf.transpose(img, perm=[1, 0, 2])
+#     print(img.shape)
+#     # #im.show()
+#     # im = np.array(im) / 255.0
+#     images.append(np.array(img))
+    
+
+# x_test = np.array(images)
+# prediction_model = keras.models.Model(
+#     model.get_layer(name="image").input, model.get_layer(name="dense2").output
+# )
+# preds = prediction_model.predict(x_test)
+# pred_texts = decode_batch_predictions(preds)
+
+
+# for i, img in enumerate(os.listdir('test_samples')):
+#     # image = cv2.imread(os.path.join('test_samples', img))
+#     # plt.imshow(image)
+#     # plt.show()
+#     print("Predicted Captcha = {}".format(pred_texts[i]))
+
+def predict_math_cnn_rnn(url):
+    img = tf.io.read_file(url)
     img = tf.io.decode_png(img, channels=1)
-    # 3. Convert to float32 in [0, 1] range
     img = tf.image.convert_image_dtype(img, tf.float32)
-    # 4. Resize to the desired size
     print(img.shape)
     img = tf.image.resize(img, [img_height, img_width])
     print(img.shape)
-    # 5. Transpose the image because we want the time
-    # dimension to correspond to the width of the image.
     img = tf.transpose(img, perm=[1, 0, 2])
-    print(img.shape)
-    # #im.show()
-    # im = np.array(im) / 255.0
     images.append(np.array(img))
-    
 
-x_test = np.array(images)
-prediction_model = keras.models.Model(
-    model.get_layer(name="image").input, model.get_layer(name="dense2").output
-)
-preds = prediction_model.predict(x_test)
-pred_texts = decode_batch_predictions(preds)
-
-
-for i, img in enumerate(os.listdir('test_samples')):
-    image = cv2.imread(os.path.join('test_samples', img))
-    plt.imshow(image)
-    plt.show()
-    print("Predicted Captcha = {}".format(pred_texts[i]))
+    x_test = np.array(images)
+    prediction_model = keras.models.Model(
+        model.get_layer(name="image").input, model.get_layer(name="dense2").output
+    )
+    preds = prediction_model.predict(x_test)
+    return decode_batch_predictions(preds)[0]
     
 
 
