@@ -15,23 +15,35 @@
                 <input type="submit" class="btn btn-primary" name="UploadCaptcha" value="Upload Captcha Image" /> {% endif %}
             </form>
             {% endif %} {% if img_url %}
-            <br><label>Captcha Type: </label>
-            <h6>{{ captcha_type }}</h6><br> {% endif %}{% if captcha_text %}
-            <table class="table table-hover table-dark  w-50">
+            <br><label>Captcha Type: <b>{{ captcha_type }}</b></label>
+            <br>{% if not captcha_text %}{% for url in img_url %}
+            <img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"><br> {% endfor %} {% endif %}{% endif %}{% if captcha_text %}
+            <table class="table table-hover table-dark  w-75">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col" class="limit">Captcha Image</th>
                         <th scope=" col ">Cracked Value</th>
+                        {% if math %}
+                        <th scope=" col ">Solved Value</th>
+                        {% endif %}
                     </tr>
                     <tbody>
-                        {% for i, url, text in map %}
+                        {% if math %} {% for i, url, text, solved_val in map %}
+                        <tr>
+                            <th scope="row ">{{ i }}</th>
+                            <td class="limit"><img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"></td>
+                            <td>{{ text }}</td>
+                            <th scope=" col ">{{ solved_val }}</th>
+                        </tr>
+                        {% endfor %} {% endif %} {% if not math %} {% for i, url, text in map %}
                         <tr>
                             <th scope="row ">{{ i }}</th>
                             <td class="limit"><img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"></td>
                             <td>{{ text }}</td>
                         </tr>
-                        {% endfor %}
+                        {% endfor %} {% endif %}
+
                     </tbody>
                 </thead>
             </table>
@@ -39,8 +51,8 @@
             <form method="post" action="/crackCaptcha/crackImage/">
                 {% csrf_token %}
                 <!-- <input type="hidden" value="{{ img_url }}" name="imgUrl"> -->
-                <input type="hidden" value="{{ captcha_type }}" name="captchaType">
-                <button type="submit" class="btn btn-primary" name="CrackCaptcha">Crack Captcha</button> <br>
+                <input type="hidden" value="{{ captcha_type }}" name="captchaType"> {% if not captcha_text %}
+                <button type="submit" class="btn btn-primary" name="CrackCaptcha">Crack Captcha</button> <br>{% endif %}
             </form>
             {% endif %}
         </div>

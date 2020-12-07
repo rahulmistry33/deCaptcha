@@ -4,6 +4,7 @@ import sys,os
 from .Math_CNN_RNN_Model import predict_math_cnn_rnn
 from .Sina_CNN_Model import predict_sina_cnn
 from .WaterRipple_CNN_Model import predict_waterripple_cnn
+from .Math_CNN_Wheezy_Model import predict_math_cnn_wheezy
 from .models import Image
 
 filenames = []
@@ -32,13 +33,32 @@ def crack(request):
 
 def crackImage(request):
     if request.method == 'POST': 
-        # img_url = request.POST['imgUrl']
         captcha_type = request.POST['captchaType']
         
         #add time param
-        text = crack_from_image_list(filenames,captcha_type)
-        map = zip(range(1,len(filenames)+1),filenames,text)
-    return render(request,'crackCaptcha/crack.html', {'map':map,'captcha_text':text,'img_url':filenames, 'captcha_type':captcha_type }) 
+        texts = crack_from_image_list(filenames,captcha_type)
+        
+        math_bool = False
+        if(captcha_type == "Mathematical" or captcha_type == "WheezyMath"):
+            math_bool = True
+            solved = []
+            for t in texts:
+                c=0
+                if(t.find('+')!=-1):
+                    a,b = t.split('+')
+                    c=int(a)+int(b)
+                elif(t.find('-')!=-1):
+                    a,b = t.split('-')
+                    c=int(a)-int(b)
+                else:
+                    c = "error"
+                solved.append(c)
+            map = zip(range(1,len(filenames)+1),filenames,texts, solved)
+
+        else:
+            map = zip(range(1,len(filenames)+1),filenames,texts)
+
+    return render(request,'crackCaptcha/crack.html', {'map':map,'math':math_bool,'captcha_text':texts,'img_url':filenames, 'captcha_type':captcha_type }) 
 
 def crack_from_image_list(url_list,type):
     pred_texts = None
@@ -47,8 +67,9 @@ def crack_from_image_list(url_list,type):
 
     elif type == 'Mathematical':
         pred_texts=predict_math_cnn_rnn(url_list)
-        # if(pred_texts[0].find("[UNK]")!=-1):
-        #     print("-try wheezy-")
+        
+    elif type == "WheezyMath":
+        pred_texts = predict_math_cnn_wheezy(url_list)
 
     elif type == 'WaterRipple':
         pred_texts=predict_waterripple_cnn(url_list)

@@ -82,7 +82,6 @@ def decode_batch_predictions(pred):
 img_width = 200
 img_height = 80
 
-#accpets a list of image_labels
 def predict_math_cnn_rnn(url_list):
     images = []
     for url in url_list:
