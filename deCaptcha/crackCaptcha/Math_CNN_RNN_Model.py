@@ -12,6 +12,7 @@ from keras.models import model_from_json
 from PIL import Image
 import tensorflow as tf
 import keras
+from django.conf import settings
 
 
 class CTCLayer(layers.Layer):
@@ -77,62 +78,29 @@ def decode_batch_predictions(pred):
         output_text.append(res)
     return output_text
 
-images = []
+
 img_width = 200
 img_height = 80
-# for i, im in enumerate(os.listdir('test_samples')):
-#     img = tf.io.read_file(os.path.join('test_samples', im))
-#     # 2. Decode and convert to grayscale
-#     img = tf.io.decode_png(img, channels=1)
-#     # 3. Convert to float32 in [0, 1] range
-#     img = tf.image.convert_image_dtype(img, tf.float32)
-#     # 4. Resize to the desired size
-#     print(img.shape)
-#     img = tf.image.resize(img, [img_height, img_width])
-#     print(img.shape)
-#     # 5. Transpose the image because we want the time
-#     # dimension to correspond to the width of the image.
-#     img = tf.transpose(img, perm=[1, 0, 2])
-#     print(img.shape)
-#     # #im.show()
-#     # im = np.array(im) / 255.0
-#     images.append(np.array(img))
-    
 
-# x_test = np.array(images)
-# prediction_model = keras.models.Model(
-#     model.get_layer(name="image").input, model.get_layer(name="dense2").output
-# )
-# preds = prediction_model.predict(x_test)
-# pred_texts = decode_batch_predictions(preds)
-
-
-# for i, img in enumerate(os.listdir('test_samples')):
-#     # image = cv2.imread(os.path.join('test_samples', img))
-#     # plt.imshow(image)
-#     # plt.show()
-#     print("Predicted Captcha = {}".format(pred_texts[i]))
-
-def predict_math_cnn_rnn(url):
-    img = tf.io.read_file(url)
-    img = tf.io.decode_png(img, channels=1)
-    img = tf.image.convert_image_dtype(img, tf.float32)
-    print(img.shape)
-    img = tf.image.resize(img, [img_height, img_width])
-    print(img.shape)
-    img = tf.transpose(img, perm=[1, 0, 2])
-    images.append(np.array(img))
+#accpets a list of image_labels
+def predict_math_cnn_rnn(url_list):
+    images = []
+    for url in url_list:
+        url = os.path.join(settings.MEDIA_ROOT,"images/"+url)
+        img = tf.io.read_file(url)
+        img = tf.io.decode_png(img, channels=1)
+        img = tf.image.convert_image_dtype(img, tf.float32)
+        # print(img.shape)
+        img = tf.image.resize(img, [img_height, img_width])
+        # print(img.shape)
+        img = tf.transpose(img, perm=[1, 0, 2])
+        images.append(np.array(img))
 
     x_test = np.array(images)
     prediction_model = keras.models.Model(
         model.get_layer(name="image").input, model.get_layer(name="dense2").output
     )
     preds = prediction_model.predict(x_test)
-    return decode_batch_predictions(preds)[0]
+
+    return decode_batch_predictions(preds)
     
-
-
-
-
-
-

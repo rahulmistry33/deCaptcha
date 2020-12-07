@@ -1,69 +1,10 @@
 <!DOCTYPE html> {% load static %}
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
 
-    <title>deCaptcha</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
-</head>
-<script>
-    smoothscroll = function() {
-        $("#features").css("visibility", "visible");
-
-        $("html,body").animate({
-                scrollTop: $("#features").offset().top,
-            },
-            "slow"
-        );
-    };
-</script>
+{% include "crackCaptcha/nav.html" with active_tab='crack' %}
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="background: #25252b !important">
-        <div class="container">
-            <a class="navbar-brand" href="/crackCaptcha/index"><img class="icon" src="{% static 'icons/robot.svg' %}" />&nbsp;&nbsp;deCaptcha</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/crackCaptcha/index">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    {% if not logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                    <li class="nav-item" style="margin-left: 30px">
-                        <span class="navbar-text text-white">
-                            {{ username }}
-                        </span>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <br><br>
     <!-- Page Content -->
     <div class="container">
         <div class="card" style="background-color: #25252b; width: 100%; height: 100%; padding: 50px; border-radius: 10px;">
@@ -74,23 +15,34 @@
                 <input type="submit" class="btn btn-primary" name="UploadCaptcha" value="Upload Captcha Image" /> {% endif %}
             </form>
             {% endif %} {% if img_url %}
-            <label for="captchaImg">Uploaded Captcha: </label> <img src="/media/images/{{ img_url }}" name="captchaImg" style="max-width:50% !important; height:auto; " alt="Captcha image">
             <br><label>Captcha Type: </label>
-            <h6>{{ captcha_type }}</h6><br>
+            <h6>{{ captcha_type }}</h6><br> {% endif %}{% if captcha_text %}
+            <table class="table table-hover table-dark  w-50">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" class="limit">Captcha Image</th>
+                        <th scope=" col ">Cracked Value</th>
+                    </tr>
+                    <tbody>
+                        {% for i, url, text in map %}
+                        <tr>
+                            <th scope="row ">{{ i }}</th>
+                            <td class="limit"><img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"></td>
+                            <td>{{ text }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </thead>
+            </table>
+            {% endif %} {% if img_url %}
             <form method="post" action="/crackCaptcha/crackImage/">
                 {% csrf_token %}
-                <input type="hidden" value="{{ img_url }}" name="imgUrl">
+                <!-- <input type="hidden" value="{{ img_url }}" name="imgUrl"> -->
                 <input type="hidden" value="{{ captcha_type }}" name="captchaType">
-                <button type="submit" class="btn btn-primary" name="CrackCaptcha">Crack Captcha</button> {% endif %} <br>
+                <button type="submit" class="btn btn-primary" name="CrackCaptcha">Crack Captcha</button> <br>
             </form>
-            {% if captcha_text %} <br><label>Captcha Text: </label>
-            <h6>{{ captcha_text }}</h6><br>{% endif %}
-            <!-- <div class="form-group">
-                <h5>Time to crack: {{ time }} seconds</h5>
-                <h3 id="hashtype">Captcha Type is: {{ hashtype }}</h3>
-                <h3 id="hashvalue">Cracked captcha is: {{ value }}</h3>
-            </div> -->
-
+            {% endif %}
         </div>
     </div>
     <!-- /.container -->
