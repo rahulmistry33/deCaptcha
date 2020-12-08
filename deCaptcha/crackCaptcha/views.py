@@ -5,6 +5,8 @@ from .Math_CNN_RNN_Model import predict_math_cnn_rnn
 from .Sina_CNN_Model import predict_sina_cnn
 from .WaterRipple_CNN_Model import predict_waterripple_cnn
 from .Math_CNN_Wheezy_Model import predict_math_cnn_wheezy
+from .Shadow_CNN_RNN_Model import predict_shadow_cnn_rnn
+from .FishEye_CNN_RNN_Model import predict_fisheye_cnn_rnn
 from .models import Image
 
 filenames = []
@@ -67,6 +69,12 @@ def crack_from_image_list(url_list,type):
 
     elif type == 'Mathematical':
         pred_texts=predict_math_cnn_rnn(url_list)
+
+    elif type == 'Shadow':
+        pred_texts=predict_shadow_cnn_rnn(url_list)
+
+    elif type == 'FishEye':
+        pred_texts=predict_fisheye_cnn_rnn(url_list)
         
     elif type == "WheezyMath":
         pred_texts = predict_math_cnn_wheezy(url_list)

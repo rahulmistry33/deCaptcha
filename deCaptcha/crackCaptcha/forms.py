@@ -3,6 +3,8 @@ from .models import CaptchaImage, CAPTCHA_CHOICES, CrackCaptcha
 CAPTCHA_CHOICES = (
    ('WaterRipple', 'WaterRipple Captcha'),
    ('Sina', 'Sina Captcha'),
+   ('Shadow', 'Shadow Captcha'),
+   ('FishEye','FishEye Captcha'),
    ('Mathematical', 'Mathematical Captcha'),
    ('WheezyMath', 'Wheezy-Math Captcha')
 )
