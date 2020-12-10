@@ -37,9 +37,13 @@ def predict_sina_cnn(url_list):
     
     for url in url_list:
       url = os.path.join(settings.MEDIA_ROOT,"images/"+url)
-      im = Image.open(url)
-      im = np.array(im) / 255.0
-      images.append(np.array(im))
+
+      # im = Image.open(url)
+      img = cv2.imread(url)
+      img = img / 255.0
+      img = cv2.resize(img,(420,45))
+      # im = np.array(im) / 255.0
+      images.append(np.array(img))
 
     x_test = np.array(images)
     y_pred = model.predict_on_batch(x_test)

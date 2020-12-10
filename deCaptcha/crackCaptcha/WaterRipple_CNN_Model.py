@@ -28,6 +28,7 @@ symbols = string.ascii_lowercase + "0123456789"
 def predict(filepath):
     img = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
     img = img / 255.0
+    img = cv2.resize(img,(200,50))
     res = np.array(model.predict(img[np.newaxis, :, :, np.newaxis]))
     ans = np.reshape(res, (5, 36))
     captcha_chars = []

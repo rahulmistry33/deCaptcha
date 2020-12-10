@@ -59,9 +59,12 @@ def predict_math_cnn_wheezy(url_list):
     images = []
     for url in url_list:
         url = os.path.join(settings.MEDIA_ROOT,"images/"+url)
-        im = Image.open(os.path.join(url))
-        im = np.array(im) / 255.0
-        images.append(np.array(im))
+        # img = Image.open(os.path.join(url))
+        img = cv2.imread(url)
+        img = img / 255.0
+        img = cv2.resize(img,(200,75))
+        
+        images.append(np.array(img))
 
     x_test = np.array(images)
     y_pred = model.predict_on_batch(x_test)

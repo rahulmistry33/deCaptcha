@@ -16,6 +16,9 @@
             </form>
             {% endif %} {% if img_url %}
             <br><label>Captcha Type: <b>{{ captcha_type }}</b></label>
+            {% if captcha_text %}
+                <br><label>Time to Crack: <b>{{ timeToCrack }} seconds</b></label>
+            {% endif %}
             <br>{% if not captcha_text %}{% for url in img_url %}
             <img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"><br> {% endfor %} {% endif %}{% endif %}{% if captcha_text %}
             <table class="table table-hover table-dark  w-75">

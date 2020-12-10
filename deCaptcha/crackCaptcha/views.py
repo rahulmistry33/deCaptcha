@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import CaptchaUploadForm
-import sys,os
+import sys,os,time
 from .Math_CNN_RNN_Model import predict_math_cnn_rnn
 from .Sina_CNN_Model import predict_sina_cnn
 from .WaterRipple_CNN_Model import predict_waterripple_cnn
@@ -8,6 +8,7 @@ from .Math_CNN_Wheezy_Model import predict_math_cnn_wheezy
 from .Shadow_CNN_RNN_Model import predict_shadow_cnn_rnn
 from .FishEye_CNN_RNN_Model import predict_fisheye_cnn_rnn
 from .models import Image
+
 
 filenames = []
 def index(request):
@@ -37,9 +38,12 @@ def crackImage(request):
     if request.method == 'POST': 
         captcha_type = request.POST['captchaType']
         
-        #add time param
+        timeToCrack = time.time()
+
+
         texts = crack_from_image_list(filenames,captcha_type)
         
+        timeToCrack = (time.time() - timeToCrack)
         math_bool = False
         if(captcha_type == "Mathematical" or captcha_type == "WheezyMath"):
             math_bool = True
@@ -60,7 +64,7 @@ def crackImage(request):
         else:
             map = zip(range(1,len(filenames)+1),filenames,texts)
 
-    return render(request,'crackCaptcha/crack.html', {'map':map,'math':math_bool,'captcha_text':texts,'img_url':filenames, 'captcha_type':captcha_type }) 
+    return render(request,'crackCaptcha/crack.html', {'map':map,'timeToCrack':timeToCrack,'math':math_bool,'captcha_text':texts,'img_url':filenames, 'captcha_type':captcha_type }) 
 
 def crack_from_image_list(url_list,type):
     pred_texts = None
