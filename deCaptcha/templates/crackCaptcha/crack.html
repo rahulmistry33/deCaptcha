@@ -15,10 +15,8 @@
                 <input type="submit" class="btn btn-primary" name="UploadCaptcha" value="Upload Captcha Image" /> {% endif %}
             </form>
             {% endif %} {% if img_url %}
-            <br><label>Captcha Type: <b>{{ captcha_type }}</b></label>
-            {% if captcha_text %}
-                <br><label>Time to Crack: <b>{{ timeToCrack }} seconds</b></label>
-            {% endif %}
+            <br><label>Captcha Type: <b>{{ captcha_type }}</b></label> {% if captcha_text %}
+            <br><label>Time to Crack: <b>{{ timeToCrack }} seconds</b></label> {% endif %}
             <br>{% if not captcha_text %}{% for url in img_url %}
             <img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"><br> {% endfor %} {% endif %}{% endif %}{% if captcha_text %}
             <table class="table table-hover table-dark  w-75">
@@ -29,6 +27,8 @@
                         <th scope=" col ">Cracked Value</th>
                         {% if math %}
                         <th scope=" col ">Solved Value</th>
+                        {% endif %} {% if type_list %}
+                        <th scope=" col ">Captcha Type</th>
                         {% endif %}
                     </tr>
                     <tbody>
@@ -39,13 +39,20 @@
                             <td>{{ text }}</td>
                             <th scope=" col ">{{ solved_val }}</th>
                         </tr>
-                        {% endfor %} {% endif %} {% if not math %} {% for i, url, text in map %}
+                        {% endfor %} {% endif %} {% if not math %} {% if not type_list %}{% for i, url, text in map %}
                         <tr>
                             <th scope="row ">{{ i }}</th>
                             <td class="limit"><img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"></td>
                             <td>{{ text }}</td>
                         </tr>
-                        {% endfor %} {% endif %}
+                        {% endfor %} {% endif %} {% endif %} {% if not math %} {% if type_list %}{% for i, url, text, type in map %}
+                        <tr>
+                            <th scope="row ">{{ i }}</th>
+                            <td class="limit"><img src="/media/images/{{ url }}" style="max-width:40% !important; height:auto; " alt="Captcha image"></td>
+                            <td>{{ text }}</td>
+                            <td>{{ type }}</td>
+                        </tr>
+                        {% endfor %} {% endif %} {% endif %}
 
                     </tbody>
                 </thead>

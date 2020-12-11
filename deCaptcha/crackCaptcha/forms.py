@@ -1,6 +1,7 @@
 from django import forms 
 from .models import CaptchaImage, CAPTCHA_CHOICES, CrackCaptcha
 CAPTCHA_CHOICES = (
+   ('Unknown', 'Unknown Type/Different Types'),
    ('WaterRipple', 'WaterRipple Captcha'),
    ('Sina', 'Sina Captcha'),
    ('Shadow', 'Shadow Captcha'),
@@ -13,7 +14,7 @@ class CaptchaUploadForm(forms.Form):
         # model = CaptchaImage
     captcha_img = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
         # fields = ['captcha_img','captcha_type']
-    captcha_type = forms.ChoiceField(choices=CAPTCHA_CHOICES, initial="WaterRipple", widget=forms.RadioSelect(attrs={'class': "custom-radio-list"}))
+    captcha_type = forms.ChoiceField(choices=CAPTCHA_CHOICES, initial="Unknown", widget=forms.RadioSelect(attrs={'class': "custom-radio-list"}))
         
         # widgets = {
         #        'captcha_type': forms.RadioSelect(attrs={'class': "custom-radio-list"})
