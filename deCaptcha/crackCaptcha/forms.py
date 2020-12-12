@@ -1,5 +1,13 @@
 from django import forms 
 from .models import CaptchaImage, CAPTCHA_CHOICES, CrackCaptcha
+from django.utils.safestring import mark_safe
+
+
+class CustomChoiceField(forms.ModelChoiceField):
+
+    def label_from_instance(self, obj):
+        return mark_safe("<img src='%s'/>" % obj)
+
 CAPTCHA_CHOICES = (
    ('Unknown', 'Unknown Type/Different Types'),
    ('WaterRipple', 'WaterRipple Captcha'),
@@ -10,15 +18,10 @@ CAPTCHA_CHOICES = (
    ('WheezyMath', 'Wheezy-Math Captcha')
 )
 class CaptchaUploadForm(forms.Form): 
-    # class Meta: 
-        # model = CaptchaImage
+   
     captcha_img = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-        # fields = ['captcha_img','captcha_type']
-    captcha_type = forms.ChoiceField(choices=CAPTCHA_CHOICES, initial="Unknown", widget=forms.RadioSelect(attrs={'class': "custom-radio-list"}))
-        
-        # widgets = {
-        #        'captcha_type': forms.RadioSelect(attrs={'class': "custom-radio-list"})
-        #    } 
+    # captcha_type = forms.ChoiceField(choices=CAPTCHA_CHOICES, initial="Unknown", widget=forms.RadioSelect(attrs={'class': "custom-radio-list"}))
+       
 
 class CrackCaptchaForm(forms.ModelForm): 
     class Meta: 

@@ -29,7 +29,7 @@ def crack(request):
                 filenames.append(instance.filename())
                 instance.save()
             
-            captcha_type = form.cleaned_data['captcha_type']
+            captcha_type = request.POST['options']
             return render(request,'crackCaptcha/crack.html', {'img_url':filenames, 'captcha_type':captcha_type }) 
     else: 
         form = CaptchaUploadForm() 

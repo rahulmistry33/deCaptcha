@@ -12,6 +12,146 @@
             {% if not captcha_text %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %} {{ form.as_p }} {% if not img_url %}
+                <div class="row">
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio" name="options" value="Unknown" class="card-input-element" checked/>
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <div class="card-body">
+                              <p class="card-text">Unknown Captcha Type</p>
+                            </div>
+                          </div>
+              
+                      </label>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio" name="options" value="WaterRipple" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/w1.png" alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">
+                                  WaterRipple
+                                  <ul><li>Five characters of same size</li>
+                                  <li>Background is Gray/ White</li>
+                                  <li>Foreground is Black</li>
+                                  <li>Interference line traverses all characters</li></ul>
+                                </p>
+                            </div>
+                          </div>
+              
+                      </label>
+
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio" name="options" value="Sina" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/sina1.png" height="72" alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">
+                                Sina
+                                <ul><li>Five characters</li>
+                                <li>Characters are connected</li>
+                                <li>White Bg, Red/Blue Fg</li>
+                                <li>Interference line traverses all characters</li></ul>
+                              </p>
+                            </div>
+                          </div>
+                      </label>
+
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio"  name="options" value="Shadow" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/shadow1.png"  alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">Shadow 
+                                <ul><li>Five characters</li>
+                                    <li>Grey/White bg with Shadow</li>
+                                    <li>Foreground is black</li>
+                                    <li>Interference line traverses all characters</li></ul>
+                              </p>
+                            </div>
+                          </div>
+                      </label>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio" name="options" value="FishEye" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/fisheye1.png" alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">FishEye
+                                <ul><li>Five characters</li>
+                                    <li>Grey/White bg with Nets</li>
+                                    <li>Foreground is black</li>
+                                    <li>One char is warped like fisheye view</li></ul>
+                              </p>
+                            </div>
+                          </div>
+              
+                      </label>
+
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio" name="options" value="Mathematical" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/math1.png" height="72" alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">Mathematical
+                                <ul><li>5 chars: digits and operands</li>
+                                    <li>Noisy Background</li>
+                                    <li>Color is green/blue/red</li>
+                                    <li>Interference line traverses all characters</li></ul>
+                              </p>
+                            </div>
+                          </div>
+                      </label>
+
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+
+                        <label>
+                        <input type="radio"  name="options" value="WheezyMath" class="card-input-element" />
+              
+                        <div class="card card-input" style="width: 18rem;">
+                            <img class="card-img-top" src="/media/types/wheezy1.png"  height="72" alt="Card image cap">
+                            <div class="card-body">
+                              <p class="card-text">WheezyMath
+                                <ul><li>5 chars: digits and operands</li>
+                                    <li>Noisy Bg, tilted chars</li>
+                                    <li>Color is green/blue/red</li>
+                                    <li>Interference line traverses all characters</li></ul>
+                              </p>
+                            </div>
+                          </div>
+                      </label>
+
+                    </div>
+                </div>
                 <input type="submit" class="btn btn-primary" name="UploadCaptcha" value="Upload Captcha Image" /> {% endif %}
             </form>
             {% endif %} {% if img_url %}
