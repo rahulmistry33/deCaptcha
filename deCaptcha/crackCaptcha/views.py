@@ -9,6 +9,10 @@ from .Shadow_CNN_RNN_Model import predict_shadow_cnn_rnn
 from .FishEye_CNN_RNN_Model import predict_fisheye_cnn_rnn
 from .Classification_Model import get_captcha_type
 from .models import Image
+import random
+import string
+import PIL
+from claptcha import Claptcha
 
 
 filenames = []
@@ -34,6 +38,23 @@ def crack(request):
     else: 
         form = CaptchaUploadForm() 
     return render(request,'crackCaptcha/crack.html', {'form' : form}) 
+
+
+def generate(request):
+    if request.method == 'GET': 
+        return render(request,'generateCaptcha/generate.html') 
+    else:
+        captchaType = request.POST['captchaType']
+        captchaLength = int(request.POST['captchaLength'])
+        captchaTextType = request.POST['captchaTextType']
+        noiseLevel = float(request.POST['noiseLevel'])
+        addRandomArc = False
+        fontfile = None
+        if 'addRandomArc' in request.POST: addRandomArc = True
+        if 'fontfile' in request.FILES: fontfile = request.FILES['fontfile']
+        img_url = generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType , noiseLevel, addRandomArc, fontfile)
+        return render(request, 'generateCaptcha/generate.html', {'img_url' : img_url})
+        
 
 def crackImage(request):
     if request.method == 'POST': 
@@ -124,3 +145,14 @@ def crack_from_image_list(url_list,type,isUnknown=False,type_list=None):
             pred_texts=predict_waterripple_cnn(url_list)
 
     return pred_texts
+
+def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType , noiseLevel, addRandomArc=False, fontfile=None):
+    rndLetters = (random.choice(string.ascii_uppercase) for _ in range(6))
+    captchaText = "".join(rndLetters)
+    c = Claptcha(captchaText, "D:\Final Year Project\DeCaptcha\deCaptcha\crackCaptcha\Arial.ttf", resample=PIL.Image.BICUBIC, noise=0.3)
+    c.size = (170,90)
+    c.margin = (25,25)
+    text, _ = c.write('D:\Final Year Project\DeCaptcha\deCaptcha\deCaptcha\media\generated\captcha.png')
+    img_url = '/media/generated/captcha.png'
+    return img_url
+    
