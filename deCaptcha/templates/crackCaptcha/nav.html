@@ -35,6 +35,10 @@
                         <a class="nav-link" href="/crackCaptcha/crack">Crack
                         </a>
                     </li>
+                    <li class="nav-item {% if active_tab == 'generate' %}active{% endif %}">
+                        <a class="nav-link" href="/crackCaptcha/generate">Generate
+                        </a>
+                    </li>
                     {% if not logged_in %}
                     <li class="nav-item">
                         <a class="nav-link" href="/register">Register</a>

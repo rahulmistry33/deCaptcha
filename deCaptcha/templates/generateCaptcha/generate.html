@@ -13,7 +13,7 @@
 	</style>
 	{% include "crackCaptcha/nav.html" with active_tab='crack' %}
 	<body>
-		<div class="container">
+		<!-- <div class="container"> -->
 			<div class="row">
 				<div class="col-md-9">
 					<form method="POST" enctype="multipart/form-data">
@@ -56,7 +56,7 @@
 							<div class="col-md-4"></div>
 
 							<!-- New Field -->
-							<div class="my-2"></div>
+							<!-- <div class="my-2"></div>
 							<div class="col-md-2"></div>
 							<div class="col-md-2">Add random arc</div>
 							<div class="col-md-4">
@@ -70,13 +70,13 @@
 									/>
 								</div>
 							</div>
-							<div class="col-md-4"></div>
+							<div class="col-md-4"></div> -->
 
 							<!-- New Field -->
 							<div class="my-2"></div>
 							<div class="col-md-2"></div>
 							<div class="col-md-2">Captcha Text</div>
-							<div class="col-md-4">
+							<div class="col-md-5">
 								<input
 									type="radio"
 									name="captchaTextType"
@@ -94,7 +94,7 @@
 								/>
 								Custom Text
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<input
 									type="text"
 									class="form-control"
@@ -109,7 +109,7 @@
 							<div class="my-2"></div>
 							<div class="col-md-2"></div>
 							<div class="col-md-2">Noise Level</div>
-							<div class="col-md-4">
+							<div class="col-md-5">
 								<input
 									type="range"
 									name="noiseLevel"
@@ -120,7 +120,7 @@
 									onchange="updateTextInput(this.value);"
 								/>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<input
 									type="text"
 									class="form-control"
@@ -128,6 +128,99 @@
 									value=""
 									disabled
 								/>
+							</div>
+
+							<!-- New Field -->
+							<div class="my-2"></div>
+							<div class="col-md-2"></div>
+							<div class="col-md-2">Background Color</div>
+							<div class="col-md-5">
+								<input
+									type="text"
+									name="bg1"
+									class="w-25"
+									placeholder="R"
+									
+								/>
+								<input
+									type="text"
+									name="bg2"
+									class="w-25"
+									placeholder="G"
+									
+								/>
+								<input
+									type="text"
+									name="bg3"
+									class="w-25"
+									placeholder="B"
+									
+								/>
+							</div>
+							<div class="col-md-3">
+								
+							</div>
+
+							<!-- New Field -->
+							<div class="my-2"></div>
+							<div class="col-md-2"></div>
+							<div class="col-md-2">Font Color</div>
+							<div class="col-md-5">
+								<input
+									type="text"
+									name="f1"
+									class="w-25"
+									placeholder="R"
+									
+								/>
+								<input
+									type="text"
+									name="f2"
+									class="w-25"
+									placeholder="G"
+									
+								/>
+								<input
+									type="text"
+									name="f3"
+									class="w-25"
+									placeholder="B"
+									
+								/>
+							</div>
+							<div class="col-md-3">
+								
+							</div>
+
+							<!-- New Field -->
+							<div class="my-2"></div>
+							<div class="col-md-2"></div>
+							<div class="col-md-2">Arc Color</div>
+							<div class="col-md-5">
+								<input
+									type="text"
+									name="a1"
+									class="w-25"
+									placeholder="R"
+									
+								/>
+								<input
+									type="text"
+									name="a2"
+									class="w-25"
+									placeholder="G"
+									
+								/>
+								<input
+									type="text"
+									name="a3"
+									class="w-25"
+									placeholder="B"
+									
+								/>
+							</div>
+							<div class="col-md-3">
+								
 							</div>
 
 							<!-- New Field -->
@@ -162,11 +255,14 @@
 					{% if img_url %}
 
 					<div class="card" style="width: 20rem">
-						<img
+						<a href="{{ img_url }}" download="captcha">
+							<img
 							src="{{ img_url }}"
 							class="card-img-top"
 							alt="Generated Captcha"
-						/>
+							/>
+						  </a>
+						
 						<div class="card-body">
 							<p class="card-text">Generated Captcha</p>
 						</div>
@@ -174,7 +270,7 @@
 					{% endif %}
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 		<br />
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
