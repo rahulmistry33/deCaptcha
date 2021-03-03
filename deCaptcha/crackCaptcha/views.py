@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.files.storage import default_storage
 from .forms import CaptchaUploadForm
 import sys,os,time
 from .Math_CNN_RNN_Model import predict_math_cnn_rnn
@@ -12,7 +13,7 @@ from .models import Image
 import random
 import string
 import PIL
-from claptcha import Claptcha
+from .claptcha import Claptcha
 
 
 filenames = []
@@ -44,15 +45,29 @@ def generate(request):
     if request.method == 'GET': 
         return render(request,'generateCaptcha/generate.html') 
     else:
+        print(request.POST)
         captchaType = request.POST['captchaType']
         captchaLength = int(request.POST['captchaLength'])
         captchaTextType = request.POST['captchaTextType']
         noiseLevel = float(request.POST['noiseLevel'])
+        captchaText = None
+        if 'captchaText' in request.POST:
+            captchaText = request.POST['captchaText']
         addRandomArc = False
         fontfile = None
         if 'addRandomArc' in request.POST: addRandomArc = True
         if 'fontfile' in request.FILES: fontfile = request.FILES['fontfile']
-        img_url = generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType , noiseLevel, addRandomArc, fontfile)
+        color=[0,0,0]
+        fontColor=[0,0,255]
+        lineColor=[255,255,255]
+        if request.POST['bg1'] != '':
+            color = [int(request.POST['bg1']),int(request.POST['bg2']),int(request.POST['bg3'])]
+        if request.POST['f1'] != '':
+            fontColor = [int(request.POST['f1']),int(request.POST['f2']),int(request.POST['f3'])]
+        if request.POST['a1'] != '':
+            lineColor = [int(request.POST['a1']),int(request.POST['a2']),int(request.POST['a3'])]
+        img_url = generateParamterisedCaptcha(captchaType,captchaLength, captchaTextType ,captchaText ,noiseLevel, addRandomArc, fontfile,color,fontColor,lineColor)
+        
         return render(request, 'generateCaptcha/generate.html', {'img_url' : img_url})
         
 
@@ -146,13 +161,33 @@ def crack_from_image_list(url_list,type,isUnknown=False,type_list=None):
 
     return pred_texts
 
-def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType , noiseLevel, addRandomArc=False, fontfile=None):
-    rndLetters = (random.choice(string.ascii_uppercase) for _ in range(6))
-    captchaText = "".join(rndLetters)
-    c = Claptcha(captchaText, "D:\Final Year Project\DeCaptcha\deCaptcha\crackCaptcha\Arial.ttf", resample=PIL.Image.BICUBIC, noise=0.3)
+def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType ,captchaText, noiseLevel, addRandomArc=False, fontfile=None,color=[0,0,0],fontColor=[0,0,255],lineColor=[255,255,255]):
+    file_name = "C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\crackCaptcha\\Arial.ttf"
+    if(fontfile != None):
+        file_name = default_storage.save(fontfile.name, fontfile)
+        file_name = "C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\deCaptcha\\media\\" + file_name
+        
+
+    if captchaTextType == 'auto':
+        if captchaType == 'alphanumeric':
+            rndLetters = (random.choice(string.ascii_uppercase) for _ in range(captchaLength))
+            captchaText = "".join(rndLetters)
+        else:
+            
+            fno = random.randint(11,100)
+            op1 =  '+' if random.randint(1,3) == 1 else '-'
+            sno = random.randint(11,100)
+            captchaText = str(fno) + op1 + str(sno)
+
+            
+            
+            
+
+
+    c = Claptcha(captchaText,file_name, color=color,textColor=fontColor,lineColor = lineColor,resample=PIL.Image.BICUBIC, noise=noiseLevel)
     c.size = (170,90)
     c.margin = (25,25)
-    text, _ = c.write('D:\Final Year Project\DeCaptcha\deCaptcha\deCaptcha\media\generated\captcha.png')
+    text, _ = c.write("C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\deCaptcha\\media\\generated\\captcha.png")
     img_url = '/media/generated/captcha.png'
     return img_url
     
