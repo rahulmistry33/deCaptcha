@@ -1,62 +1,98 @@
 <!DOCTYPE html> {% load static %}
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="description" content="" />
+		<meta name="author" content="" />
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+		<title>deCaptcha</title>
 
-    <title>deCaptcha</title>
+		<!-- Bootstrap core CSS -->
+		<link
+			href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+			rel="stylesheet"
+		/>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+		<!-- Custom styles for this template -->
+		<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
 
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="background: #25252b !important">
-        <div class="container">
-            <a class="navbar-brand" href="/crackCaptcha/index"><img class="icon" src="{% static 'icons/robo.svg' %}" />&nbsp;&nbsp;deCaptcha</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item {% if active_tab == 'home' %}active{% endif %}">
-                        <a class="nav-link" href="/crackCaptcha/index">Home
-                        </a>
-                    </li>
-                    <li class="nav-item {% if active_tab == 'crack' %}active{% endif %}">
-                        <a class="nav-link" href="/crackCaptcha/crack">Crack
-                        </a>
-                    </li>
-                    {% if not logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                    <li class="nav-item" style="margin-left: 30px">
-                        <span class="navbar-text text-white">
-                            {{ username }}
-                        </span>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <br><br>
-</body>
-
+	<body>
+		<!-- Navigation -->
+		<nav
+			class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+			style="background: #25252b !important"
+		>
+			<div class="container">
+				<a class="navbar-brand" href="/crackCaptcha/index"
+					><img
+						class="icon"
+						src="{% static 'icons/robo.svg' %}"
+					/>&nbsp;&nbsp;deCaptcha</a
+				>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-toggle="collapse"
+					data-target="#navbarResponsive"
+					aria-controls="navbarResponsive"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						<li
+							class="nav-item {% if active_tab == 'home' %}active{% endif %}"
+						>
+							<a class="nav-link" href="/crackCaptcha/index"
+								>Home
+							</a>
+						</li>
+						<li
+							class="nav-item {% if active_tab == 'crack' %}active{% endif %}"
+						>
+							<a class="nav-link" href="/crackCaptcha/crack"
+								>Crack
+							</a>
+						</li>
+						{% if not logged_in %}
+						<li class="nav-item">
+							<a class="nav-link" href="/register">Register</a>
+						</li>
+						<li class="nav-item">
+							<a
+								class="nav-link"
+								href="/crackCaptcha/home"
+								id="login"
+								>Login</a
+							>
+						</li>
+						{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="/logout">Logout</a>
+						</li>
+						<li class="nav-item" style="margin-left: 30px">
+							<span class="navbar-text text-white">
+								{{ username }}
+							</span>
+						</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<br /><br />
+	</body>
 </html>

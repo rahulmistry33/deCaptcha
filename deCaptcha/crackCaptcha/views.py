@@ -13,11 +13,49 @@ import random
 import string
 import PIL
 from claptcha import Claptcha
-
+import re
+from django.forms import ModelForm
+from django import forms
+from .models import *
 
 filenames = []
 def index(request):
     return render(request,'crackCaptcha/index.html')
+def home(request):
+    # check if the request is post 
+    if request.method =='POST':  
+ 
+        # Pass the form data to the form class
+        details = LoginForm(request.POST)
+ 
+        # In the 'form' class the clean function 
+        # is defined, if all the data is correct 
+        # as per the clean function, it returns true
+        if details.is_valid():  
+ 
+            # Temporarily make an object to be add some
+            # logic into the data if there is such a need
+            # before writing to the database   
+            post = details.save(commit = False)
+ 
+            # Finally write the changes into database
+            post.save()  
+ 
+            # redirect it to some another page indicating data
+            # was inserted successfully
+            return HttpResponse("data submitted successfully")
+             
+        else:
+            # Redirect back to the same page if the data
+            # was invalid
+            return render(request, "crackCaptcha/login.html", {'form':details})  
+    else:
+ 
+        # If the request is a GET request then,
+        # create an empty form object and 
+        # render it into the page
+        form = LoginForm(None)   
+        return render(request, 'crackCaptcha/login.html', {'form':form})
 
 def crack(request):
     global filenames
@@ -156,3 +194,32 @@ def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType , no
     img_url = '/media/generated/captcha.png'
     return img_url
     
+
+# define the class of a form
+class LoginForm(ModelForm):
+    class Meta:
+        # write the name of models for which the form is made
+        model = Login
+        # Custom fields
+        fields =["mobile", "password"]
+
+    # this function will be used for the validation
+    def clean(self):
+        # data from the form is fetched using super function
+        super(LoginForm, self).clean()
+        # extract the mobile and password field from the data
+        mobile = self.cleaned_data.get('mobile')
+        password = self.cleaned_data.get('password')
+
+        # conditions to be met for the username length
+        if len(mobile) != 10:
+            self._errors['mobile'] = self.error_class([
+                'Mobile number should be 10 digits'])
+        if len(password) != 10:
+            pattern = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            result = re.findall(pattern, password)
+            if not(result):
+                self._errors['password'] = self.error_class([
+                'Password invalid'])
+        # return any errors if found
+        return self.cleaned_data
