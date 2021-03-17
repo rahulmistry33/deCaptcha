@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 import os
 
@@ -20,4 +21,10 @@ class Image(models.Model):
     image = models.FileField(upload_to='images/')
     def filename(self):
         return os.path.basename(self.image.name)
-    # uploaded_at = models.DateTimeField(auto_now_add=True)
+    
+# model named Login
+class Login(models.Model):
+    # mobile
+	mobile = models.CharField(max_length = 20, blank = False, null = False)
+	# password
+	password = models.CharField(max_length = 20, blank = False, null = False)
