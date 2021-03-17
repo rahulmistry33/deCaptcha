@@ -1,0 +1,117 @@
+<!DOCTYPE html> {% load static %}
+<html lang="en">
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+		crossorigin="anonymous"
+	/>
+	<style>
+		input[type="radio"] {
+			display: inline;
+		}
+	</style>
+	{% include "crackCaptcha/nav.html" with active_tab='crack' %}
+	<body>
+            <div class="container-fluid">
+                <table class="table text-white">
+                    <thead>
+                    <tr>
+                        
+                        <th scope="col">Captcha Name</th>
+                        <th scope="col">Captcha Image</th>
+                        <th scope="col">Breaking Accuracy</th>
+                        <th scope="col">Text & Background Characteristics</th>
+                        <th scope="col">Captcha Length</th>
+                        <th scope="col">Distortion & Noise</th>
+                        <th scope="col">Randomness & Wavy Style</th>
+                        <th scope="col">Usability</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Fish Eye</td>
+                        <td>
+                            <img src="{% static 'analysis/fisheye1.png' %}" alt="My image">
+                        </td>
+                        <td>96%</td>
+                        <td>Text:Black 
+                            <br>
+                            Background:Grey/White
+                        </td>
+                        <td>5 characters fixed</td>
+                        <td>Grid Patterns add to distortion</td>
+                        <td>Randomness in characters with last two characters having wavy style</td>
+                        <td>Difficult</td>
+                    </tr>
+                    <tr>
+                        <td>Sina</td>
+                        <td><img src="{% static 'analysis/sina1.png' %} " width="200px" height="50px" alt="My image"></td>
+                        <td>77%</td>
+                        <td>Text:Red/Blue
+                            <br>
+                            Background:White
+                        </td>
+                        <td>5 characters fixed</td>
+                        <td>Interference lines adds to distortion. No noise and has hollow characters</td>
+                        <td>Randomness in characters with wavy style</td>
+                        <td>Easy</td>
+                    </tr>
+                    <tr>
+                        <td>Shadow</td>
+                        <td><img src="{% static 'analysis/shadow1.png' %}" alt="My image"></td>
+                        <td>98%</td>
+                        <td>Text:Black
+                            <br>
+                            Background:Grey/White
+                        </td>
+                        <td>5 characters fixed</td>
+                        <td>Interference lines & Dark shadow adds to distortion and noise</td>
+                        <td>Randomness in characters but no wavy style</td>
+                        <td>Easy</td>
+                    </tr>
+                    <tr>
+                        <td>Wheezy-Math</td>
+                        <td><img src="{% static 'analysis/wheezy1.png' %}" alt="My image"></td>
+                        <td>97%</td>
+                        <td>Text:Red/Blue
+                            <br>
+                            Background:Yellow
+                        </td>
+                        <td>1 operator & 2 operands</td>
+                        <td>Interference lines & noise adds to distortion</td>
+                        <td>Randomness in characters with wavy style</td>
+                        <td>Average</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematical</td>
+                        <td><img src="{% static 'analysis/math1.png' %}" alt="My image"></td>
+                        <td>99%</td>
+                        <td>Text:Red/Green/Blue
+                            <br>
+                            Background:White
+                        </td>
+                        <td>1 operator & 2 operands</td>
+                        <td>Interference lines & noise adds to distortion</td>
+                        <td>Randomness in characters but no wavy style</td>
+                        <td>Average</td>
+                    </tr>
+                    <tr>
+                        <td>Water-Ripple</td>
+                        <td><img src="{% static 'analysis/w1.png' %}" alt="My image"></td>
+                        <td>90%</td>
+                        <td>Text:Black
+                            <br>
+                            Background:Grey/White
+                        </td>
+                        <td>5 characters fixed</td>
+                        <td>Interference lines adds to distortion,but no noise</td>
+                        <td>Randomness in characters with wavy style</td>
+                        <td>Average</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+	</body>
+</html>
