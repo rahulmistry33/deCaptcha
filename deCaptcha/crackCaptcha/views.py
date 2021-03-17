@@ -71,6 +71,9 @@ def generate(request):
         return render(request, 'generateCaptcha/generate.html', {'img_url' : img_url})
         
 
+def analysis(request):
+    return  render(request,'analysis/analyse.html')
+
 def crackImage(request):
     if request.method == 'POST': 
         captcha_type = request.POST['captchaType']
@@ -191,3 +194,4 @@ def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType ,cap
     img_url = '/media/generated/captcha.png'
     return img_url
     
+

@@ -6,4 +6,5 @@ urlpatterns = [
     path('crack/',views.crack, name='crack'),
     path('generate/',views.generate, name='generate'),
     path('crackImage/',views.crackImage, name='crackImage'),
+    path('analysis/',views.analysis, name='analysis'),
 ]
