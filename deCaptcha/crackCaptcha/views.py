@@ -4,6 +4,7 @@ from .forms import CaptchaUploadForm
 import sys,os,time
 from .Math_CNN_RNN_Model import predict_math_cnn_rnn
 from .Sina_CNN_Model import predict_sina_cnn
+from .ManShaped_Model import predict_manshaped_cnn
 from .WaterRipple_CNN_Model import predict_waterripple_cnn
 from .Math_CNN_Wheezy_Model import predict_math_cnn_wheezy
 from .Shadow_CNN_RNN_Model import predict_shadow_cnn_rnn
@@ -19,6 +20,7 @@ from django.forms import ModelForm
 from django import forms
 from .models import *
 from .claptcha import Claptcha
+# from . import Claptcha
 
 
 filenames = []
@@ -202,13 +204,25 @@ def crack_from_image_list(url_list,type,isUnknown=False,type_list=None):
         elif type == 'WaterRipple':
             pred_texts=predict_waterripple_cnn(url_list)
 
+        elif type == 'ManShaped':
+            pred_texts=predict_manshaped_cnn(url_list)
+
     return pred_texts
 
 def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType ,captchaText, noiseLevel, addRandomArc=False, fontfile=None,color=[0,0,0],fontColor=[0,0,255],lineColor=[255,255,255]):
-    file_name = "C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\crackCaptcha\\Arial.ttf"
+    file_name = "C:\\Users\\vinod\\Desktop\\deCaptcha FYP\\deCaptcha\\crackCaptcha\\Arial.ttf"
+    # print("directorrrr:"+os.getcwd())
+    # file_name = os.path.join(os.getcwd(), 'crackCaptcha\Arial.tff')
+    # file_name = os.path.join(os.getcwd(),'crackCaptcha\Arial.tff')
+    # file_name = (os.getcwd()+"media\\Arial.tff")
     if(fontfile != None):
         file_name = default_storage.save(fontfile.name, fontfile)
-        file_name = "C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\deCaptcha\\media\\" + file_name
+        
+        file_name = "C:\\Users\\vinod\\Desktop\\deCaptcha FYP\\deCaptcha\\deCaptcha\\media\\" + file_name
+        print(file_name)
+        # file_name = os.getcwd()+"\\media\\"+file_name
+        # file_name = os.path.join(os.getcwd(), 'media/{}'.format(fontFile))
+
         
 
     if captchaTextType == 'auto':
@@ -230,7 +244,9 @@ def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType ,cap
     c = Claptcha(captchaText,file_name, color=color,textColor=fontColor,lineColor = lineColor,resample=PIL.Image.BICUBIC, noise=noiseLevel)
     c.size = (170,90)
     c.margin = (25,25)
-    text, _ = c.write("C:\\Users\\vinod\\Desktop\\New folder\\deCaptcha\\deCaptcha\\media\\generated\\captcha.png")
+    text, _ = c.write("C:\\Users\\vinod\\Desktop\\deCaptcha FYP\\deCaptcha\\deCaptcha\\media\\generated\\captcha.png")
+
+    # text, _ = c.write("..\\deCaptcha\\media\\generated\\captcha.png")
     img_url = '/media/generated/captcha.png'
     return img_url
     
