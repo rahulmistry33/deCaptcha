@@ -21,10 +21,3 @@ class Image(models.Model):
     image = models.FileField(upload_to='images/')
     def filename(self):
         return os.path.basename(self.image.name)
-    
-# model named Login
-class Login(models.Model):
-    # mobile
-	mobile = models.CharField(max_length = 20, blank = False, null = False)
-	# password
-	password = models.CharField(max_length = 20, blank = False, null = False)
