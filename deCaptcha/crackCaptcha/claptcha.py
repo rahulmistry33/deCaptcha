@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """This module defines Claptcha and ClaptchaError classes."""
 
 import sys
