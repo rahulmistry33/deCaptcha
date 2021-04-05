@@ -27,3 +27,5 @@ class CrackCaptchaForm(forms.ModelForm):
     class Meta: 
         model = CrackCaptcha
         fields = ['img_url','captcha_type']
+
+

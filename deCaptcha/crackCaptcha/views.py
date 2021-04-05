@@ -220,3 +220,37 @@ def generateParamterisedCaptcha(captchaType, captchaLength, captchaTextType ,cap
     text, _ = c.write(os.path.join(os.getcwd() ,"deCaptcha/media/generated/captcha.png"))
     img_url = '/media/generated/captcha.png'
     return img_url
+
+# define the class of a form
+class LoginForm(ModelForm):
+    class Meta:
+        # write the name of models for which the form is made
+        model = Login
+        # Custom fields
+        fields =["mobile", "password"]
+
+    # this function will be used for the validation
+    def clean(self):
+        # data from the form is fetched using super function
+        super(LoginForm, self).clean()
+        # extract the mobile and password field from the data
+        mobile = self.cleaned_data.get('mobile')
+        password = self.cleaned_data.get('password')
+
+        # conditions to be met for the username length
+        try:
+            int(mobile)
+        except:
+            self._errors['mobile'] = self.error_class([
+                'Mobile number should only have digits'])
+        if len(mobile) != 10:
+            self._errors['mobile'] = self.error_class([
+                'Mobile number should be 10 digits'])
+        if len(password) != 10:
+            pattern = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            result = re.findall(pattern, password)
+            if not(result):
+                self._errors['password'] = self.error_class([
+                'Password invalid'])
+        # return any errors if found
+        return self.cleaned_data
