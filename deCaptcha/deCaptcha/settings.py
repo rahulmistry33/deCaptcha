@@ -26,7 +26,7 @@ SECRET_KEY = '8ysp!_3&3n&6=c2cy$u881n#s!1*xl@bsjlgdgx55ki5q2ht1m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'https://decodecaptcha.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'decodecaptcha.herokuapp.com']
 
 
 # Application definition
